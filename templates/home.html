@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home</title>
+      {% block css %}
+
+        {% endblock css %}
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/5.3.0/css/bootstrap.min.css">
+    <style>
+        body {
+            background-color: #f8f9fa;
+        }
+        .card {
+            border: none;
+            border-radius: 10px;
+            transition: transform 0.2s ease-in-out;
+        }
+        .card:hover {
+            transform: scale(1.05);
+        }
+        .car-image {
+            height: 200px;
+            object-fit: cover;
+            border-top-left-radius: 10px;
+            border-top-right-radius: 10px;
+        }
+        .card-body {
+            text-align: center;
+        }
+        .btn-custom {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            transition: background-color 0.3s;
+        }
+        .btn-custom:hover {
+            background-color: #0056b3;
+        }
+        .container {
+            margin-top: 50px;
+        }
+    </style>
+</head>
+<body>
+
+        <div class="container">
+        <h1 class="text-center mb-5">Available Cars</h1>
+        <div class="row">
+            <ul>
+                         {% if user.is_authenticated %}
+                              <li class="tm-nav-item"><a href="{% url 'profile' user.username %}" class="tm-nav-link">
+                                    <i class="fas fa-home"></i>
+                                  Profile
+                              </a>
+                              </li>
+                        {% else %}
+                          <li class="tm-nav-item"><a href="{% url 'login' %}" class="tm-nav-link">
+                                    <i class="fas fa-home"></i>
+                                      Profile
+                          </a></li>
+                        {% endif %}
+                     {% if user.is_authenticated %}
+                              <li class="tm-nav-item"><a href="{% url 'create'  %}" class="tm-nav-link">
+                                  Elon berish
+                              </a>
+                              </li>
+                        {% else %}
+                          <li class="tm-nav-item"><a href="{% url 'login' %}" class="tm-nav-link">
+
+                                  Elon berish
+                          </a></li>
+                        {% endif %}
+                      {% if user.is_authenticated %}
+                         <li class="tm-nav-item">
+                            <form action="{% url 'logout' %}" method="POST">
+                                {% csrf_token %}
+                                <button type="submit" class="tm-nav-link btn btn-link">
+                                    <i class="fa fa-sign-out" style="font-size:36px"></i>
+                                    Logout
+                                </button>
+                            </form>
+                        </li>
+                    {% else %}
+                        <li class="tm-nav-item"><a href="{% url 'login' %}" class="tm-nav-link">
+                            <i class="fa fa-sign-in" style="font-size:36px"></i>
+                            Login
+                        </a></li>
+                    {% endif %}
+            </ul>
+            {% block title %}
+
+        {% endblock title %}
+             {% for car in cars %}
+                {% if car.available %}
+                     {% if user.is_authenticated %}
+                            <a href="{% url 'detail' car.pk%}">
+                        <div class="col-md-4 mb-4">
+                        <div class="card shadow-sm">
+                        <img src="{{ car.photo.url }}" alt="{{ car.name }}" class="card-img-top car-image">
+                        <div class="card-body">
+                            <h5 class="card-title">{{ car.name }}</h5>
+                            <p class="card-text">{{ car.description }}</p>
+                            <p class="card-text"><strong>Price:</strong> ${{ car.price }}</p>
+                        </div>
+                         </div>
+                     </div>
+                    </a>
+                {% else %}
+                            <a href="{% url 'login' %}">
+                        <div class="col-md-4 mb-4">
+                        <div class="card shadow-sm">
+                        <img src="{{ car.photo.url }}" alt="{{ car.name }}" class="card-img-top car-image">
+                        <div class="card-body">
+                            <h5 class="card-title">{{ car.name }}</h5>
+                            <p class="card-text">{{ car.description }}</p>
+                            <p class="card-text"><strong>Price:</strong> ${{ car.price }}</p>
+                        </div>
+                         </div>
+                     </div>
+                    </a>
+                {% endif %}
+                {% endif %}
+            {% endfor %}
+
+        </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/5.3.0/js/bootstrap.min.js"></script>
+</body>
+</html>

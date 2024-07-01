@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{user.username}}</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<style>
+    /* styles.css */
+
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f9;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+.profile-container {
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+    max-width: 600px;
+    width: 100%;
+    overflow: hidden;
+    text-align: center;
+}
+
+.profile-header {
+    background-color: #007bff;
+    color: white;
+    padding: 20px;
+}
+
+.profile-image {
+    border-radius: 50%;
+    width: 150px;
+    height: 150px;
+    object-fit: cover;
+    border: 5px solid #fff;
+    margin-top: -75px;
+}
+
+.profile-name {
+    margin: 0;
+    font-size: 2em;
+}
+
+.profile-title {
+    margin: 0;
+    font-size: 1.2em;
+    font-weight: 300;
+}
+
+.profile-body {
+    padding: 20px;
+    text-align: left;
+}
+
+.profile-body h2 {
+    margin-top: 0;
+}
+
+.profile-body p {
+    line-height: 1.6;
+}
+
+.profile-body ul {
+    list-style: none;
+    padding: 0;
+}
+
+.profile-body ul li {
+    margin-bottom: 10px;
+}
+
+.profile-body ul li a {
+    color: #007bff;
+    text-decoration: none;
+}
+
+.profile-body ul li a:hover {
+    text-decoration: underline;
+}
+</style>
+<body>
+{% if user.is_authenticated %}
+    <div class="profile-container">
+        <div class="profile-header"><br><br><br><br>
+            <img src="{{user.photo.url}}" alt="Profil rasmi" class="profile-image">
+            <h1 class="profile-name">{{user.username}}</h1>
+        </div>
+        <div class="profile-body">
+            <h2>Aloqa</h2>
+            <ul>
+                <li>Email: {{user.email}}</li>
+            </ul>
+        </div>
+        <a href="{% url 'home' %}">Orta qaytish</a><br><br>
+        <h1>Siz bron qilgan mashinalar:</h1>
+        {% if cars %}
+            {% for cars in cars %}
+            <img width="200px" src="{{cars.car.photo.url}}">
+            <h2>ismi: {{cars.car.name}}</h2>
+            <h3>narxi: {{cars.car.price}}</h3>
+            {% endfor %}
+        {% else %}
+            <h2>Siz hech qanday mashina bron qilmagansiz:(</h2>
+        {% endif %}
+    </div>
+{% endif %}
+</body>
+</html>

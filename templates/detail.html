@@ -1,0 +1,76 @@
+{% extends 'home.html' %}
+
+{% load static %}
+{% block title %}
+{% block css %}
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/5.3.0/css/bootstrap.min.css">
+    <style>
+
+        body {
+            background-color: #f8f9fa;
+        }
+        .car-image {
+            height: 400px;
+            object-fit: cover;
+            border-radius: 10px;
+        }
+        .card {
+            border: none;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            margin-top: 20px;
+        }
+        .card-body {
+            padding: 20px;
+        }
+        .btn-custom {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            transition: background-color 0.3s;
+        }
+        .btn-custom:hover {
+            background-color: #0056b3;
+        }
+        .container {
+            margin-top: 50px;
+        }
+        .badge-custom {
+            background-color: #28a745;
+            color: white;
+        }
+        .price {
+            font-size: 1.5rem;
+            color: #28a745;
+        }
+    </style>
+{% endblock %}
+{% if user.is_authenticated %}
+    <div class="container">
+        <div class="card">
+            <img src="{{ car.photo.url }}" alt="{{ car.name }}" class="card-img-top car-image">
+            <div class="card-body">
+                <h1 class="card-title">{{ car.name }}</h1>
+                <h2 class="price">$ {{ car.price }}</h2>
+                <p class="card-text">{{ car.description }}</p>
+                <p class="card-text">
+                    <span class="badge badge-custom">{{ car.brand }}</span>:
+                    <span class="badge badge-custom">{{ car.name }}</span>
+                </p>
+              {% if not car.available %}
+                    <button class="btn btn-success" disabled>Bron qilinib bolgan</button>
+                {% else %}
+                    <form method="post" action="{% url 'detail' car.pk%}">
+                        {% csrf_token %}
+                        <button type="submit" class="btn btn-primary">Bron qilish</button>
+                    </form>
+                {% endif %}
+                <a href="{% url 'home' %}">Ortga qaytish</a>
+            </div>
+        </div>
+    </div>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/5.3.0/js/bootstrap.min.js"></script>
+{% endif %}
+{% endblock %}

@@ -1,0 +1,12 @@
+{% extends 'home.html' %}
+
+
+{% block title %}
+{% if user.is_authenticated %}
+  <form method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    {{ form.as_p }}
+     <button type="submit">Save</button>
+  </form>
+{% endif %}
+{% endblock title %}
